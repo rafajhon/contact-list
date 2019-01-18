@@ -10,4 +10,28 @@ public class PersonDTO implements Serializable {
     private String name;
     private List<ContactDTO> contacts;
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<ContactDTO> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<ContactDTO> contacts) {
+        this.contacts = contacts;
+    }
 }
