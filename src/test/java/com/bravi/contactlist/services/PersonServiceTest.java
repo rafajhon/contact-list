@@ -48,7 +48,7 @@ public class PersonServiceTest {
     @Test(expected = PersonNotFundException.class)
     public void findByError() throws PersonNotFundException {
         Long aLong = new Long(1);
-        Optional<Person> o = Optional.of(null);
+        Optional<Person> o = Optional.ofNullable(null);
         Mockito.when(personRepository.findById(aLong)).thenReturn(o);
         personService.findById(aLong);
     }

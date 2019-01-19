@@ -3,11 +3,12 @@ package com.bravi.contactlist.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonsDTO implements Serializable {
     @JsonProperty(value = "persons")
-    private List<PersonDTO> personListDTOS;
+    private List<PersonDTO> personListDTOS = new ArrayList<>();
 
     public List<PersonDTO> getPersonListDTOS() {
         return personListDTOS;
