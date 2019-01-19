@@ -44,7 +44,7 @@ public class PersonControllerTest {
         Mockito.when(personService.findAll()).thenReturn(new LinkedList<>());
         mockMvc.perform(get("/persons"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("[]"));
+                .andExpect(content().string("{\"persons\":[]}"));
     }
 
     @Test
@@ -71,14 +71,12 @@ public class PersonControllerTest {
                 .andExpect(content().string("{\"id\":1,\"name\":\"testName\",\"contacts\":[]}"));
     }
 
-
     @Test
     public void testDelete() throws Exception {
         Mockito.doNothing().when(personService).delete(eq(Long.valueOf("1")));
         mockMvc.perform(delete("/persons/" + 1))
                 .andExpect(status().isOk());
     }
-
 
     @Test
     public void testUpdate() throws Exception, PersonNotFundException {
