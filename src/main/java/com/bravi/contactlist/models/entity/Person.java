@@ -2,6 +2,7 @@ package com.bravi.contactlist.models.entity;
 
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -12,7 +13,7 @@ public class Person {
     private String name;
 
     @OneToMany(targetEntity= Contact.class)
-    private List<Contact> contacts;
+    private List<Contact> contacts = new LinkedList<>();
 
     public Long getId() {
         return id;

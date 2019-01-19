@@ -46,7 +46,7 @@ public class PersonService {
                 .orElseThrow(() -> new PersonNotFundException());
     }
 
-    private Optional<Person> getPerson(Long id) {
+    public Optional<Person> getPerson(Long id) {
         return this.personRepository.findById(id);
     }
 
@@ -56,7 +56,7 @@ public class PersonService {
         return converterToDTO(person);
     }
 
-    private Person save(Person person) {
+    public Person save(Person person) {
         return personRepository.save(person);
     }
 

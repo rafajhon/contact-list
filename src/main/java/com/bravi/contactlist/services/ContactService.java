@@ -1,10 +1,12 @@
 package com.bravi.contactlist.services;
 
 import com.bravi.contactlist.exceptions.ContactNotFundException;
+import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.ContactDTO;
 import com.bravi.contactlist.models.entity.Contact;
 import com.bravi.contactlist.models.entity.Person;
 import com.bravi.contactlist.repositories.ContactRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,13 @@ public class ContactService {
         return objectMapper.convertValue(contact, ContactDTO.class);
     }
 
+    private Contact converterToEntity(final ContactDTO contactDTO) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper.convertValue(contactDTO, Contact.class);
+    }
+
+
     public ContactDTO findById(Long id) throws ContactNotFundException {
         Optional<Contact> contactDb = contactRepository.findById(id);
         return contactDb.filter(Objects::nonNull)
@@ -45,5 +54,27 @@ public class ContactService {
                 }).orElseThrow(() -> new ContactNotFundException());
     }
 
+    private Contact save(Contact contact) {
+        return contactRepository.save(contact);
+    }
 
+
+    public ContactDTO create(ContactDTO contactDTO) throws PersonNotFundException {
+        Contact contact = this.converterToEntity(contactDTO);
+        Person person = this.getPerson(contactDTO.getPersonId());
+        this.save(contact);
+        person.getContacts().add(contact);
+        personService.save(person);
+        ContactDTO contactDTOResponse = this.converterToDTO(contact);
+        contactDTOResponse.setPersonId(person.getId());
+        return contactDTO;
+    }
+
+    private Person getPerson(Long personId) throws PersonNotFundException {
+        Optional<Person> personOp = personService.getPerson(personId);
+        if(!personOp.isPresent()){
+            throw new PersonNotFundException();
+        }
+        return personOp.get();
+    }
 }

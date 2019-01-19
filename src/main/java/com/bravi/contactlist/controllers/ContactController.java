@@ -1,15 +1,15 @@
 package com.bravi.contactlist.controllers;
 
 import com.bravi.contactlist.exceptions.ContactNotFundException;
+import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.ContactDTO;
 import com.bravi.contactlist.models.dto.ContactsDTO;
 import com.bravi.contactlist.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/contacts")
 public class ContactController {
@@ -33,4 +33,8 @@ public class ContactController {
         return ResponseEntity.ok().body(contactService.findById(id));
     }
 
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ContactDTO> create(@RequestBody ContactDTO contactDTO) throws PersonNotFundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(contactService.create(contactDTO));
+    }
 }
