@@ -97,4 +97,8 @@ public class ContactService {
     public Optional<Contact> getContact(Long id) {
         return this.contactRepository.findById(id);
     }
+
+    public void delete(Long id) {
+        contactRepository.deleteById(id);
+    }
 }

@@ -33,7 +33,7 @@ public class PersonController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO personDTO){
+    public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO personDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.create(personDTO));
     }
 
@@ -43,7 +43,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id){
+    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
         personService.delete(id);
         return ResponseEntity.ok().build();
     }

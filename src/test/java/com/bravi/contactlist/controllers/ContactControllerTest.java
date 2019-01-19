@@ -91,4 +91,11 @@ public class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"id\":1,\"description\":\"EMAIL\",\"value\":\"test@gmail.com\",\"personId\":1}"));
     }
+
+    @Test
+    public void testDelete() throws Exception {
+        Mockito.doNothing().when(contactService).delete(eq(Long.valueOf("1")));
+        mockMvc.perform(delete("/contacts/" + 1))
+                .andExpect(status().isOk());
+    }
 }
