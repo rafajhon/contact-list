@@ -1,8 +1,8 @@
 package com.bravi.contactlist.exceptions;
 
-public class ContactNotFundException extends Exception {
+public class ContactNotFundException extends Throwable {
 
-    public ContactNotFundException(String message) {
+    public ContactNotFundException() {
         super("Contact not found");
     }
 }

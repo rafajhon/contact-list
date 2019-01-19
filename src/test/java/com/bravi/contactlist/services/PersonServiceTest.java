@@ -4,6 +4,7 @@ import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.PersonDTO;
 import com.bravi.contactlist.models.entity.Contact;
 import com.bravi.contactlist.models.entity.Person;
+import com.bravi.contactlist.models.enums.ContactType;
 import com.bravi.contactlist.repositories.PersonRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class PersonServiceTest {
         person.setName("nameTest");
         person.setId(new Long(10));
         Contact contact = new Contact();
-        contact.setDescription("Email");
+        contact.setDescription(ContactType.EMAIL);
         contact.setValue("test@mail.com.br");
         person.setContacts(Collections.singletonList(contact));
         Mockito.when(personRepository.findById(eq(person.getId()))).thenReturn(Optional.of(person));
@@ -42,7 +43,7 @@ public class PersonServiceTest {
         assertEquals(person.getName(), personDTO.getName());
         assertEquals(person.getId(), personDTO.getId());
         assertEquals(person.getContacts().get(0).getValue(), personDTO.getContacts().get(0).getValue());
-        assertEquals(person.getContacts().get(0).getDescription(), personDTO.getContacts().get(0).getDescription());
+        assertEquals("EMAIL", personDTO.getContacts().get(0).getDescription());
 
     }
 

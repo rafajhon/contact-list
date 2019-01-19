@@ -1,5 +1,7 @@
 package com.bravi.contactlist.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -9,6 +11,18 @@ public class ContactDTO implements Serializable {
     private String description;
     @NotBlank
     private String value;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long personId;
+
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
+    }
 
     public Long getId() {
         return id;

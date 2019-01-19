@@ -2,6 +2,7 @@ package com.bravi.contactlist.services;
 
 import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.PersonDTO;
+import com.bravi.contactlist.models.entity.Contact;
 import com.bravi.contactlist.models.entity.Person;
 import com.bravi.contactlist.repositories.PersonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,5 +76,9 @@ public class PersonService {
     private Person updatePerson(Person personDb, PersonDTO personDTO) {
         personDb.setName(personDTO.getName());
         return personDb;
+    }
+
+    public Person findByContact(Contact contact) {
+        return this.personRepository.findByContacts(contact);
     }
 }
