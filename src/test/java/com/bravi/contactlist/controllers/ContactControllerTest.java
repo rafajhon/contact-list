@@ -21,8 +21,7 @@ import java.util.LinkedList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +75,20 @@ public class ContactControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(new ObjectMapper().writeValueAsString(contactDTO)))
                 .andExpect(status().isCreated())
+                .andExpect(content().string("{\"id\":1,\"description\":\"EMAIL\",\"value\":\"test@gmail.com\",\"personId\":1}"));
+    }
+    @Test
+    public void testUpdate() throws Exception, PersonNotFundException, ContactNotFundException {
+        ContactDTO contactDTO = new ContactDTO();
+        contactDTO.setId(Long.valueOf("1"));
+        contactDTO.setDescription(ContactType.EMAIL.name());
+        contactDTO.setValue("test@gmail.com");
+        contactDTO.setPersonId(new Long(1));
+        Mockito.when(contactService.update(any())).thenReturn(contactDTO);
+        mockMvc.perform(put("/contacts")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(new ObjectMapper().writeValueAsString(contactDTO)))
+                .andExpect(status().isOk())
                 .andExpect(content().string("{\"id\":1,\"description\":\"EMAIL\",\"value\":\"test@gmail.com\",\"personId\":1}"));
     }
 }

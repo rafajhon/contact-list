@@ -73,12 +73,9 @@ public class ContactServiceTest {
         Person person = new Person();
         person.setId(new Long(2));
         Mockito.when(personService.getPerson(eq(new Long(1)))).thenReturn(Optional.of(person));
-        Mockito.when(contactRepository.save(any(Contact.class))).thenAnswer(invocation -> {
-            return invocation.getArgument(0);
-        });
-        Mockito.when(personService.save(eq(person))).thenAnswer(invocation -> {
-            return invocation.getArgument(0);
-        });
+        Mockito.when(contactRepository.save(any(Contact.class)))
+                .thenAnswer(invocation -> (invocation.getArgument(0)));
+        Mockito.when(personService.save(eq(person))).thenAnswer(invocation -> (invocation.getArgument(0)));
         ContactDTO contactDTOResponse = contactService.create(contactDTO);
         assertNotNull(contactDTOResponse);
     }
@@ -92,5 +89,30 @@ public class ContactServiceTest {
         contactDTO.setPersonId(new Long(1));
         Mockito.when(personService.getPerson(eq(new Long(1)))).thenReturn(Optional.ofNullable(null));
         contactService.create(contactDTO);
+    }
+
+    @Test
+    public void testUpdate() throws ContactNotFundException {
+        ContactDTO contactDTO = new ContactDTO();
+        contactDTO.setId(Long.valueOf("1"));
+        contactDTO.setDescription(ContactType.EMAIL.name());
+        contactDTO.setValue("test@gmail.com");
+        contactDTO.setPersonId(new Long(1));
+        Contact contact = new Contact();
+        Mockito.when(contactRepository.findById(eq(new Long(1)))).thenReturn(Optional.of(contact));
+        Mockito.when(contactRepository.save(eq(contact))).thenAnswer(invocation -> (invocation.getArgument(0)));
+        ContactDTO contactDTOResponse = contactService.update(contactDTO);
+        assertEquals(contactDTO.getValue(), contact.getValue());
+        assertEquals(contactDTO.getDescription(), contact.getDescription().name());
+        assertEquals(contactDTO.getValue(), contactDTOResponse.getValue());
+        assertEquals(contactDTO.getDescription(), contactDTOResponse.getDescription());
+    }
+
+    @Test(expected = ContactNotFundException.class)
+    public void testUpdateError() throws ContactNotFundException {
+        ContactDTO contactDTO = new ContactDTO();
+        contactDTO.setId(Long.valueOf("1"));
+        Mockito.when(contactRepository.findById(eq(new Long(1)))).thenReturn(Optional.ofNullable(null));
+        contactService.update(contactDTO);
     }
 }

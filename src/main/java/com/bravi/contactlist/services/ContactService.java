@@ -5,6 +5,7 @@ import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.ContactDTO;
 import com.bravi.contactlist.models.entity.Contact;
 import com.bravi.contactlist.models.entity.Person;
+import com.bravi.contactlist.models.enums.ContactType;
 import com.bravi.contactlist.repositories.ContactRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,5 +77,24 @@ public class ContactService {
             throw new PersonNotFundException();
         }
         return personOp.get();
+    }
+
+    public ContactDTO update(ContactDTO contactDTO) throws ContactNotFundException {
+        Optional<Contact> contactOp = this.getContact(contactDTO.getId());
+        return contactOp.filter(Objects::nonNull)
+                .map(contactDb->{return this.updateContact(contactDb, contactDTO);})
+                .map(this::save)
+                .map(this::converterToDTO)
+                .orElseThrow(() -> new ContactNotFundException());
+    }
+
+    private Contact updateContact(Contact contactDb, ContactDTO contactDTO) {
+        contactDb.setValue(contactDTO.getValue());
+        contactDb.setDescription(ContactType.valueOf(contactDTO.getDescription()));
+        return contactDb;
+    }
+
+    public Optional<Contact> getContact(Long id) {
+        return this.contactRepository.findById(id);
     }
 }

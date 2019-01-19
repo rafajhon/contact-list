@@ -37,4 +37,10 @@ public class ContactController {
     public ResponseEntity<ContactDTO> create(@RequestBody ContactDTO contactDTO) throws PersonNotFundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(contactService.create(contactDTO));
     }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ContactDTO> update(@RequestBody ContactDTO contactDTO) throws ContactNotFundException {
+        return ResponseEntity.ok().body(contactService.update(contactDTO));
+    }
+
 }
