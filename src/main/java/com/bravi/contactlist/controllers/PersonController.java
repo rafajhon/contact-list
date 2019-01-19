@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/persons")
 public class PersonController {
 
@@ -33,12 +35,12 @@ public class PersonController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> create(@Valid @RequestBody PersonDTO personDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.create(personDTO));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PersonDTO> update(@RequestBody PersonDTO personDTO) throws PersonNotFundException {
+    public ResponseEntity<PersonDTO> update(@Valid @RequestBody PersonDTO personDTO) throws PersonNotFundException {
         return ResponseEntity.ok().body(personService.update(personDTO));
     }
 

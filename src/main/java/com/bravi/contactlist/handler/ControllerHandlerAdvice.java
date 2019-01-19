@@ -1,4 +1,4 @@
-package com.bravi.contactlist.handle;
+package com.bravi.contactlist.handler;
 
 import com.bravi.contactlist.exceptions.ContactNotFundException;
 import com.bravi.contactlist.exceptions.PersonNotFundException;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ControllerHandllerAdvice {
+public class ControllerHandlerAdvice {
 
     @ExceptionHandler(PersonNotFundException.class)
     public ResponseEntity<ResponceErroDTO> catchMethodArgumentNotValidException(PersonNotFundException exception) {

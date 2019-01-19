@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/contacts")
 public class ContactController {
     private ContactService contactService;
@@ -34,12 +36,12 @@ public class ContactController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ContactDTO> create(@RequestBody ContactDTO contactDTO) throws PersonNotFundException {
+    public ResponseEntity<ContactDTO> create(@Valid @RequestBody ContactDTO contactDTO) throws PersonNotFundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(contactService.create(contactDTO));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ContactDTO> update(@RequestBody ContactDTO contactDTO) throws ContactNotFundException {
+    public ResponseEntity<ContactDTO> update(@Valid @RequestBody ContactDTO contactDTO) throws ContactNotFundException {
         return ResponseEntity.ok().body(contactService.update(contactDTO));
     }
 
