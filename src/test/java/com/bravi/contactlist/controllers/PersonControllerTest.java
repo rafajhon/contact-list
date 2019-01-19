@@ -78,4 +78,19 @@ public class PersonControllerTest {
         mockMvc.perform(delete("/persons/" + 1))
                 .andExpect(status().isOk());
     }
+
+
+    @Test
+    public void testUpdate() throws Exception, PersonNotFundException {
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(Long.valueOf("1"));
+        personDTO.setName("testName");
+        Mockito.when(personService.update(any())).thenReturn(personDTO);
+        mockMvc.perform(put("/persons")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(new ObjectMapper().writeValueAsString(personDTO)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"id\":1,\"name\":\"testName\",\"contacts\":[]}"));
+    }
+
 }

@@ -39,10 +39,14 @@ public class PersonService {
     }
 
     public PersonDTO findById(final Long id) throws PersonNotFundException {
-        Optional<Person> person = this.personRepository.findById(id);
+        Optional<Person> person = getPerson(id);
         return person.filter(Objects::nonNull)
                 .map(this::converterToDTO)
                 .orElseThrow(() -> new PersonNotFundException());
+    }
+
+    private Optional<Person> getPerson(Long id) {
+        return this.personRepository.findById(id);
     }
 
     public PersonDTO create(PersonDTO personDTO) {
@@ -50,11 +54,26 @@ public class PersonService {
         this.save(person);
         return converterToDTO(person);
     }
-    private Person save(Person person){
+
+    private Person save(Person person) {
         return personRepository.save(person);
     }
 
     public void delete(Long id) {
         personRepository.deleteById(id);
+    }
+
+    public PersonDTO update(PersonDTO personDTO) throws PersonNotFundException {
+        Optional<Person> person = this.getPerson(personDTO.getId());
+        return person.filter(Objects::nonNull)
+                .map(personDb->{return this.updatePerson(personDb, personDTO);})
+                .map(this::save)
+                .map(this::converterToDTO)
+                .orElseThrow(() -> new PersonNotFundException());
+    }
+
+    private Person updatePerson(Person personDb, PersonDTO personDTO) {
+        personDb.setName(personDTO.getName());
+        return personDb;
     }
 }

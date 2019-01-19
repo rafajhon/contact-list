@@ -37,6 +37,11 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.create(personDTO));
     }
 
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PersonDTO> update(@RequestBody PersonDTO personDTO) throws PersonNotFundException {
+        return ResponseEntity.ok().body(personService.update(personDTO));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable(value = "id") Long id){
         personService.delete(id);
