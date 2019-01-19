@@ -33,10 +33,24 @@ public class PersonService {
         return objectMapper.convertValue(person, PersonDTO.class);
     }
 
+    private Person converterToEntity(final PersonDTO personDTO) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(personDTO, Person.class);
+    }
+
     public PersonDTO findById(final Long id) throws PersonNotFundException {
         Optional<Person> person = this.personRepository.findById(id);
         return person.filter(Objects::nonNull)
                 .map(this::converterToDTO)
                 .orElseThrow(() -> new PersonNotFundException());
+    }
+
+    public PersonDTO create(PersonDTO personDTO) {
+        Person person = this.converterToEntity(personDTO);
+        this.save(person);
+        return converterToDTO(person);
+    }
+    private Person save(Person person){
+        return personRepository.save(person);
     }
 }

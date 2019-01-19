@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,5 +52,20 @@ public class PersonServiceTest {
         Optional<Person> o = Optional.ofNullable(null);
         Mockito.when(personRepository.findById(aLong)).thenReturn(o);
         personService.findById(aLong);
+    }
+
+    @Test
+    public void testCreate() {
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setName("testName");
+        Mockito.doAnswer(invocationOnMock -> {
+            Person person = invocationOnMock.getArgument(0);
+            person.setId(new Long(1));
+            return person;
+        }).when(personRepository).save(any(Person.class));
+        PersonDTO personDTOResponse = personService.create(personDTO);
+        assertEquals("testName", personDTOResponse.getName());
+        assertEquals(Long.valueOf("1"), personDTOResponse.getId());
+        assertEquals(0, personDTOResponse.getContacts().size());
     }
 }
