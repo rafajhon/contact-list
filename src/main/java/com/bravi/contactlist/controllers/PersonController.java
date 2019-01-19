@@ -36,4 +36,10 @@ public class PersonController {
     public ResponseEntity<PersonDTO> create(@RequestBody PersonDTO personDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.create(personDTO));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable(value = "id") Long id){
+        personService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

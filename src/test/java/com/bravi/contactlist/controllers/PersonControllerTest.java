@@ -19,8 +19,7 @@ import java.util.LinkedList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,5 +69,13 @@ public class PersonControllerTest {
                 .content(new ObjectMapper().writeValueAsString(personDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(content().string("{\"id\":1,\"name\":\"testName\",\"contacts\":[]}"));
+    }
+
+
+    @Test
+    public void testDelete() throws Exception {
+        Mockito.doNothing().when(personService).delete(eq(Long.valueOf("1")));
+        mockMvc.perform(delete("/persons/" + 1))
+                .andExpect(status().isOk());
     }
 }

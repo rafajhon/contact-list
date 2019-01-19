@@ -68,4 +68,11 @@ public class PersonServiceTest {
         assertEquals(Long.valueOf("1"), personDTOResponse.getId());
         assertEquals(0, personDTOResponse.getContacts().size());
     }
+
+    @Test
+    public void testExecuteDelete() {
+        Mockito.doNothing().when(personRepository).deleteById(eq(new Long(1)));
+        personService.delete(new Long(1));
+        Mockito.verify(personRepository).deleteById(new Long(1));
+    }
 }
