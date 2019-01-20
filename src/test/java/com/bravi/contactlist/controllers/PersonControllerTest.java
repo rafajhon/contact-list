@@ -2,6 +2,7 @@ package com.bravi.contactlist.controllers;
 
 import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.PersonDTO;
+import com.bravi.contactlist.services.ContactService;
 import com.bravi.contactlist.services.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -30,6 +31,9 @@ public class PersonControllerTest {
 
     @Mock
     private PersonService personService;
+
+    @Mock
+    private ContactService contactService;
 
 
     private MockMvc mockMvc;
@@ -72,7 +76,7 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testDelete() throws Exception, PersonNotFundException {
         Mockito.doNothing().when(personService).delete(eq(Long.valueOf("1")));
         mockMvc.perform(delete("/persons/" + 1))
                 .andExpect(status().isOk());

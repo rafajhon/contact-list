@@ -64,10 +64,13 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
+
     public PersonDTO update(PersonDTO personDTO) throws PersonNotFundException {
         Optional<Person> person = this.getPerson(personDTO.getId());
         return person.filter(Objects::nonNull)
-                .map(personDb->{return this.updatePerson(personDb, personDTO);})
+                .map(personDb -> {
+                    return this.updatePerson(personDb, personDTO);
+                })
                 .map(this::save)
                 .map(this::converterToDTO)
                 .orElseThrow(() -> new PersonNotFundException());

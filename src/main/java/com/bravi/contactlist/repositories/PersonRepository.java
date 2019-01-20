@@ -13,11 +13,11 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person,Long> {
     Person findByContacts(Contact contact);
 
-    @Override
+
     @Query( "SELECT person " +
             "FROM Person person " +
             "LEFT JOIN FETCH person.contacts " +
             "WHERE person.id = :id"
     )
-    Optional findById(@Param("id")Long id);
+    Optional<Person> findById(@Param("id")Long id);
 }

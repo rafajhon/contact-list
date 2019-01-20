@@ -115,6 +115,7 @@ public class ContactServiceTest {
         Mockito.when(contactRepository.findById(eq(new Long(1)))).thenReturn(Optional.ofNullable(null));
         contactService.update(contactDTO);
     }
+
     @Test
     public void testExecuteDelete() {
         Mockito.doNothing().when(contactRepository).deleteById(eq(new Long(1)));

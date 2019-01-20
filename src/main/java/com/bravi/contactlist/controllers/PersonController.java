@@ -3,6 +3,7 @@ package com.bravi.contactlist.controllers;
 import com.bravi.contactlist.exceptions.PersonNotFundException;
 import com.bravi.contactlist.models.dto.PersonDTO;
 import com.bravi.contactlist.models.dto.PersonsDTO;
+import com.bravi.contactlist.services.ContactService;
 import com.bravi.contactlist.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@RestController
 @RequestMapping("/persons")
 public class PersonController {
 
     private PersonService personService;
+
 
     @Autowired
     public PersonController(PersonService personService) {
@@ -45,7 +48,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity delete(@PathVariable(value = "id") Long id) throws PersonNotFundException {
         personService.delete(id);
         return ResponseEntity.ok().build();
     }

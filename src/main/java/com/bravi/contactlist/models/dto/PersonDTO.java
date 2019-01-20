@@ -11,7 +11,6 @@ public class PersonDTO implements Serializable {
     private String name;
     private List<ContactDTO> contacts = new ArrayList<>();
 
-
     public Long getId() {
         return id;
     }

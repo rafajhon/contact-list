@@ -12,7 +12,7 @@ public class Person {
     private Long id;
     private String name;
 
-    @OneToMany(targetEntity= Contact.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contact> contacts = new LinkedList<>();
 
     public Long getId() {
